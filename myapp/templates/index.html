@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>YouTube Downloader</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <!-- SWEET ALERT AND LOADER CND LINK -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.all.min.js"></script>
+  <!-- END SWEET ALERT AND LOADER CND LINK -->
+
+</head>
+<body>
+
+<div class="container">
+  <h2 class="text-danger text-center">YouTube Video Downloader Project.</h2>
+  <form method="post" id="youtube_form_id">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="text">Paste Your YouTube Video Link Here.</label>
+      <input type="text" class="form-control"  placeholder="Paste Your YouTube Link" name="video_link">
+    </div>
+    
+    
+    <button type="button" id="download_id" class="btn btn-success">Downlaod Now</button>
+  </form>
+</div>
+
+</body>
+<script>
+    $('#download_id').click(function(){
+        $.ajax({
+            url:'',
+            method:'post',
+            data: $('#youtube_form_id').serialize(),
+            beforeSend: function()
+            {
+                swal.fire({
+                    title:'Video Downlaoding...',
+                    allowEscapeKey:false,
+                    allowOutsideClick: false,
+                    onOpen: () =>{
+                        swal.showLoading();
+                    }
+                })
+            },
+            success: function(data){
+                if(data.msg == 'success')
+                {
+                    swal.close();
+                    swal.fire({
+                        title:'Video Downlaod Successfully.',
+                        icon: 'success',
+                    }).then(function(){
+                        $('#youtube_form_id')[0].reset();
+                    })
+                }
+            }
+        })
+    })
+</script>
+</html>
